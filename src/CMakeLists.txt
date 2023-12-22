@@ -1,4 +1,4 @@
-set(current_target blank_slate)
+set(current_target wmcv-assert)
 
 add_executable(
     ${current_target} 
