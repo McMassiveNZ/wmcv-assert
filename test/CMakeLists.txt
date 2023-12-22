@@ -1,14 +1,16 @@
 include(gtest)
 
+set(current_target wmcv-assert-test)
+
 add_executable(
-  wmcv-assert-test
+  ${current_target}
   test_main.cpp
 )
 
 target_link_libraries(
-  wmcv-assert-test
+  ${current_target}
   gtest_main
 )
 
 include(GoogleTest)
-gtest_discover_tests(wmcv-assert-test)
+gtest_discover_tests(${current_target})
