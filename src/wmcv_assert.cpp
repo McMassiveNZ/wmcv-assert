@@ -16,12 +16,18 @@ namespace wmcv
 
     struct DefaultAssertHandler final : public IAssertHandler
     {
-        void onHandleAssert(const source_location& loc, const char* expression, const char* msg ) const noexcept
+        void onHandleAssert(const source_location& loc, const char* expression, const char* ) const noexcept
         {
-#ifdef MSVC
-            OutputDebugStringA(expression);
+			const char* fmt = R""""(Assertion Expression: %s FAILED
+    In File: %s
+    On Line: %llu
+)"""";
+#ifdef _MSC_VER
+			std::array<char, 512> buffer = {};
+			sprintf_s(buffer.data(), buffer.size(), fmt, expression, loc.file_name(), loc.line());
+            OutputDebugStringA(buffer.data());
 #else
-            printf("%s\n", expression);
+			printf(fmt, expression, loc.file_name(), loc.line());
 #endif
             WMCV_DEBUG_BREAK();
         }

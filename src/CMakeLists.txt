@@ -9,7 +9,7 @@ target_sources(
 )
 
 if(MSVC)
-    target_sources(${current_target} private pch.cpp)
+    target_sources(${current_target} PRIVATE pch.cpp)
 endif()
 
 target_precompile_headers(${current_target} PRIVATE pch.h pch.cpp)

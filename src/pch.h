@@ -9,10 +9,13 @@
 #undef NOMINMAX
 #endif
 
-#ifdef __cpp_lib_source_location
+#include <version>
+
+#if __cpp_lib_source_location
 #include <source_location>
 #endif
 
+#include <array>
 #include <cinttypes>
 #include <cstddef>
 #include <cstdio>

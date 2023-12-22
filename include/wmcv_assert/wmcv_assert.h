@@ -3,21 +3,23 @@
 
 namespace wmcv
 {
-#ifdef __cpp_lib_source_location
-    using source_location = std::source_location
+#if __cpp_lib_source_location
+    using source_location = std::source_location;
 #else
-
 struct SourceLocation
 {
-    const char* file_name;
-    size_t line;
-    
     [[nodiscard]] static consteval auto current(const char* file = __FILE__, size_t line = __LINE__ ) noexcept -> SourceLocation
     {
         return SourceLocation{ .file_name = file, .line = line };
     }
-};
 
+    [[nodiscard]] auto file_name() const noexcept -> const char* { return file_name; }
+	[[nodiscard]] auto line() const noexcept -> size_t { return line; }
+
+private:
+    const char* file_name;
+    size_t line;
+};
 using source_location = SourceLocation;
 #endif
 
@@ -37,7 +39,7 @@ do\
 {\
     if (!(x)) \
     { \
-        HandleAssert(wmcv::source_location::current(), #x, "Assert Failed");\
+        wmcv::HandleAssert(wmcv::source_location::current(), #x, "Assert Failed");\
     }\
 } \
 while (false)
