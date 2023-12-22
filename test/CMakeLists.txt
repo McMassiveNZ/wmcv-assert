@@ -9,7 +9,9 @@ add_executable(
 
 target_link_libraries(
   ${current_target}
+  wmcv-assert
   gtest_main
+  gmock_main
 )
 
 include(GoogleTest)

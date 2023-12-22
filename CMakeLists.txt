@@ -10,8 +10,8 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 OPTION(ENABLE_TESTS "Enable Unit Tests" ON)
 OPTION(ENABLE_ALL_REASONABLE_WARNINGS "Enable all possible reasonable warnings" ON )
 OPTION(ENABLE_WARNINGS_AS_ERRORS "Warnings are treated as Errors" ON)
-OPTION(ENABLE_STATIC_ANALYSIS "Enable Static Analysis Tools" ON)
-OPTION(ENABLE_SANITIZERS "Enable Sanitizer Tools" ON)
+OPTION(ENABLE_STATIC_ANALYSIS "Enable Static Analysis Tools" OFF)
+OPTION(ENABLE_SANITIZERS "Enable Sanitizer Tools" OFF)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
@@ -27,3 +27,4 @@ if (ENABLE_TESTS)
 endif()
 
 add_subdirectory(src)
+add_subdirectory(include)

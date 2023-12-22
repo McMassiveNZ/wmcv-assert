@@ -1,9 +1,19 @@
 set(current_target wmcv-assert)
 
-add_executable(
-    ${current_target} 
-    main.cpp
+add_library( ${current_target} "" )
+
+target_sources(
+    ${current_target} PRIVATE
+    pch.h
+    wmcv_assert.cpp
 )
+
+if(MSVC)
+    target_sources(${current_target} private pch.cpp)
+endif()
+
+target_precompile_headers(${current_target} PRIVATE pch.h pch.cpp)
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${SOURCES})
 
 if( ENABLE_ALL_REASONABLE_WARNINGS )
     MESSAGE("-- Additional Warnings Enabled")
