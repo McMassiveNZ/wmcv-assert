@@ -10,15 +10,14 @@ struct SourceLocation
 {
     [[nodiscard]] static consteval auto current(const char* file = __FILE__, size_t line = __LINE__ ) noexcept -> SourceLocation
     {
-        return SourceLocation{ .file_name = file, .line = line };
+        return { .m_file = file, .m_line = line };
     }
 
-    [[nodiscard]] auto file_name() const noexcept -> const char* { return file_name; }
-	[[nodiscard]] auto line() const noexcept -> size_t { return line; }
+    [[nodiscard]] auto file_name() const noexcept -> const char* { return m_file; }
+	[[nodiscard]] auto line() const noexcept -> size_t { return m_line; }
 
-private:
-    const char* file_name;
-    size_t line;
+    const char* m_file;
+    size_t m_line;
 };
 using source_location = SourceLocation;
 #endif

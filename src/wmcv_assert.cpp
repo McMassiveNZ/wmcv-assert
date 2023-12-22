@@ -4,12 +4,10 @@
 namespace wmcv
 {
 
-#if defined(__GNUC__)
-#define WMCV_DEBUG_BREAK() __builtin_debugtrap()
+#if defined(__GNUC__) || defined(__clang__)
+#define WMCV_DEBUG_BREAK() __builtin_trap()
 #elif defined(_MSC_VER)
 #define WMCV_DEBUG_BREAK() __debugbreak()
-#elif defined(__clang__)
-#define WMCV_DEBUG_BREAK() __builtin_debugtrap();
 #endif
 
     static IAssertHandler* GAssertHandler;

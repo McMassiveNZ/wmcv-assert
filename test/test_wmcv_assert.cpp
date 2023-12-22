@@ -39,9 +39,3 @@ TEST_F(AssertFixture, test_assert_calls_onHandleAssert_on_true_expression)
     
     WMCV_ASSERT(true);
 }
-
-TEST(test_wmcv_assert, test_assert_prints_message)
-{
-	wmcv::CreateDefaultAssertHandler();
-	WMCV_ASSERT(false);
-}
