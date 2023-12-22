@@ -10,6 +10,7 @@
 #include <cinttypes>
 #include <cstddef>
 #include <cstdio>
+#include <cstdarg>
 #include <string_view>
 
 #endif //WMCV_TEST_ASSERT_PCH_H_INCLUDED

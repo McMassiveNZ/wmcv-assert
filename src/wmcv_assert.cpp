@@ -31,7 +31,7 @@ namespace wmcv
 
     struct DefaultAssertHandler final : public IAssertHandler
     {
-        void onHandleAssert(const source_location& loc, std::string_view expression, std::string_view message) const noexcept
+        void onHandleAssert(const source_location& loc, const std::string_view expression, const std::string_view message) const noexcept
         {
             const char* fmt = GetAssertMessage(message);
 #ifdef _MSC_VER
