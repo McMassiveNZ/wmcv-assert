@@ -19,5 +19,6 @@
 #include <cinttypes>
 #include <cstddef>
 #include <cstdio>
+#include <string_view>
 
 #endif //WMCV_ASSERT_PCH_H_INCLUDED

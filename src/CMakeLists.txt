@@ -15,6 +15,10 @@ endif()
 target_precompile_headers(${current_target} PRIVATE pch.h pch.cpp)
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${SOURCES})
 
+if( ENABLE_ASSERTS )
+    target_compile_definitions( ${current_target} PRIVATE WMCV_ASSERTS_ENABLED)
+endif()
+
 if( ENABLE_ALL_REASONABLE_WARNINGS )
     MESSAGE("-- Additional Warnings Enabled")
     target_enable_warnings(${current_target})

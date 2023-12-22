@@ -4,7 +4,7 @@
 namespace wmcv
 {
 #if __cpp_lib_source_location
-    using source_location = std::source_location;
+using source_location = std::source_location;
 #else
 struct SourceLocation
 {
@@ -25,21 +25,32 @@ using source_location = SourceLocation;
 struct IAssertHandler
 {
     virtual ~IAssertHandler() = default;
-    virtual void onHandleAssert(const source_location& location, const char* expression, const char* msg) const noexcept = 0;
+    virtual void onHandleAssert(const source_location& location, const std::string_view expression, const std::string_view message) const noexcept = 0;
 };
 
-void HandleAssert(source_location location, const char* expression, const char* message) noexcept;
+void HandleAssert(source_location location, const char* expression, const char* fmt, ...) noexcept;
 void SetAssertHandler(IAssertHandler* handler) noexcept;
 void CreateDefaultAssertHandler() noexcept;
+
 }
 
-#define WMCV_ASSERT(x) \
-do\
-{\
-    if (!(x)) \
-    { \
-        wmcv::HandleAssert(wmcv::source_location::current(), #x, "Assert Failed");\
-    }\
-} \
-while (false)
+#ifdef WMCV_ASSERTS_ENABLED
+
+#define WMCV_ASSERT(x)\
+do{ if(!(x)){ wmcv::HandleAssert(wmcv::source_location::current(), #x, "");}} while(false)
+
+#define WMCV_ASSERT_MSG(x, ...) \
+do{ if(!(x)){ wmcv::HandleAssert(wmcv::source_location::current(), #x, __VA_ARGS__ );}} while(false)
+
+#define WMCV_FATAL() WMCV_ASSERT(false)
+#define WMCV_FATAL_MSG(...) WMCV_ASSERT_MSG(false, __VA_ARGS__)
+
+#else
+
+#define WMCV_ASSERT(x) do { ((void)(x)); }while(false)
+#define WMCV_ASSERT_MSG(x, ...) do { ((void)(x)); }while(false)
+#define WMCV_FATAL() do {} while(false)
+#define WMCV_FATAL_MSG(...) do { ((void)(__VA_ARGS__)); }while(false)
+
+#endif //WMCV_ASSERTS_ENABLED
 #endif //WMCV_ASSERT_H_INCLUDED

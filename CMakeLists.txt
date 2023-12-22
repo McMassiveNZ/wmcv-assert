@@ -12,6 +12,7 @@ OPTION(ENABLE_ALL_REASONABLE_WARNINGS "Enable all possible reasonable warnings" 
 OPTION(ENABLE_WARNINGS_AS_ERRORS "Warnings are treated as Errors" ON)
 OPTION(ENABLE_STATIC_ANALYSIS "Enable Static Analysis Tools" OFF)
 OPTION(ENABLE_SANITIZERS "Enable Sanitizer Tools" OFF)
+OPTION(ENABLE_ASSERTS "Turn on asserts" ON)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 

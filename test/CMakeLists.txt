@@ -8,6 +8,10 @@ add_executable(
   pch.h
 )
 
+if( ENABLE_ASSERTS )
+    target_compile_definitions( ${current_target} PRIVATE WMCV_ASSERTS_ENABLED)
+endif()
+
 target_link_libraries(
   ${current_target}
   wmcv-assert
