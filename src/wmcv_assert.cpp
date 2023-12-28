@@ -31,6 +31,7 @@ namespace wmcv
 
     static void DebugPrintAssertMessage(const char* fmt, const wmcv::source_location& loc, const std::string_view expression, const std::string_view message) noexcept
     {
+#ifdef _MSC_VER
 		std::array<char, 2048> buffer = {};
 
 		char* msg = buffer.data();
@@ -46,10 +47,16 @@ namespace wmcv
 			snprintf(msg, size, fmt, expr, message.data(), loc.file_name(), loc.line());
 		}
 
-#ifdef _MSC_VER
 		OutputDebugStringA(msg);
 #else
-		printf(msg);
+        if (message.empty())
+        {
+			printf(fmt, expression.data(), loc.file_name(), loc.line());
+        }
+		else
+		{
+			printf(fmt, expression.data(), message.data(), loc.file_name(), loc.line());
+		}
 #endif
     }
 
