@@ -14,31 +14,51 @@ namespace wmcv
 
     static IAssertHandler* GAssertHandler;
 
-    static const char* GetAssertMessage(std::string_view customMessage)
-    {
-        if( customMessage.empty())
-        {
-            return R""""(Assertion Expression: %s FAILED
-    In File: %s
+    static const char* GetAssertFormatMessage(const std::string_view message)
+	{
+		if (!message.empty())
+		{
+			return R""""(Assertion Expression: %s FAILED
+    %hs
+    In File: %hs
     On Line: %llu)"""";
-        }
+		}
         
-        return R""""(Assertion Expression: %s FAILED
-    %s
-    In File: %s
-    On Line: %llu)"""";
+		return R""""(Assertion Expression: %s FAILED
+    In File: %hs
+    On Line: %u)"""";
+    }
+
+    static void DebugPrintAssertMessage(const char* fmt, const wmcv::source_location& loc, const std::string_view expression, const std::string_view message) noexcept
+    {
+		std::array<char, 2048> buffer = {};
+
+		char* msg = buffer.data();
+		const size_t size = buffer.size();
+		const char* expr = expression.data();
+
+		if (message.empty())
+		{
+			snprintf(msg, size, fmt, expr, loc.file_name(), loc.line());
+		}
+		else
+		{
+			snprintf(msg, size, fmt, expr, message.data(), loc.file_name(), loc.line());
+		}
+
+#ifdef _MSC_VER
+		OutputDebugStringA(msg);
+#else
+		printf(msg);
+#endif
     }
 
     struct DefaultAssertHandler final : public IAssertHandler
     {
         void onHandleAssert(const source_location& loc, const std::string_view expression, const std::string_view message) const noexcept
         {
-            const char* fmt = GetAssertMessage(message);
-#ifdef _MSC_VER
-            OutputDebugStringA(buffer.data());
-#else
-			printf(fmt, expression, loc.file_name(), loc.line());
-#endif
+			const char* fmt = GetAssertFormatMessage(message);
+			DebugPrintAssertMessage(fmt, loc, expression, message);
             WMCV_DEBUG_BREAK();
         }
     };
@@ -53,7 +73,7 @@ namespace wmcv
         va_end(args);
         
         auto message = (num_chars >= 0 ) ? std::string_view(buffer.data(), num_chars) : std::string_view{};
-        GAssertHandler->onHandleAssert(loc, expression, message);
+        GAssertHandler->onHandleAssert(loc, expression, message.data());
     }
 
     void SetAssertHandler(IAssertHandler* handler) noexcept
